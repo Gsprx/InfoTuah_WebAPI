@@ -57,10 +57,7 @@ ul {
 }
 
 ol {
-  list-style: decimal;
-}
-h3 {
-  font-size: 140%;
+  list-style: none;
 }
 
 body {
@@ -73,9 +70,28 @@ main {
   padding-bottom: 32px;
   margin-top: 70px;
   z-index: 1;
-  margin-left: 5%;
+  margin-right: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.subcourse-container {
+  font-size: 170%;
+}
+h1 {
+  font-size: 300%;
+  margin-bottom: 5%;
+}
+h2 {
+  font-size: 200%;
+  margin-bottom: 3%;
+  margin-top: 5%;
+}
+h3 {
+  margin-top: 5%;
+  font-size: 180%;
+}
 strong {
   color: rgb(113, 128, 144);
 }
@@ -117,6 +133,7 @@ strong {
 
 .book-card {
   margin-top: 2%;
+  margin-bottom: 100px;
   border: 1px solid var(--dark-grey);
   box-shadow: 5px 3px rgba(18, 20, 23, 0.1);
   padding-left: 4%;
@@ -125,13 +142,14 @@ strong {
   padding-bottom: 2%;
   border-radius: 6px;
   background-color: #16191c;
-  max-width: 30vw;
+  width: 30vw;
   display: flex;
   flex-direction: column;
 }
 
 .book-card-image-wrapper img {
   /* Book Image is floated to the right of the text and wrapped around it */
+  width: 60%;
 }
 
 .book-card-details {
@@ -185,16 +203,19 @@ strong {
   box-shadow: 5px 3px rgba(18, 20, 23, 0.1);
   padding-left: 4%;
   padding-top: 2%;
+  padding-right: 4%;
   padding-bottom: 2%;
   border-radius: 6px;
   background-color: #16191c;
   display: flex;
   flex-direction: column;
-  max-width: 30vw;
+  width: 30vw;
 }
 
 .lecture-card-image-wrapper img {
   /* Lecture Image is floated to the right of the text and wrapped around it, follows a similar design to book cards */
+  width: 95%;
+  height: 100%;
 }
 
 .lecture-card-details {

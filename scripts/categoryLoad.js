@@ -1,6 +1,10 @@
-// fetching function
-async function fetchData() {
-  // create headers for fetching
+//-------------------------------------------------------- Functions ---------------------------------------------------------------------------- //
+
+//generic fetching function
+//returns a promised json object
+//depends on the path input relative to the remote server url
+async function fetchData(relativePath) {
+  //create headers for fetching
   let httpHeaders = new Headers();
   httpHeaders.append("Accept", "application/json");
 
@@ -11,11 +15,8 @@ async function fetchData() {
 
   let result;
   try {
-    // use fetch api to get category data from remote server
-    const response = await fetch(
-      url + "/learning-items?category=" + catID,
-      init
-    );
+    //use fetch api to get category data from remote server
+    const response = await fetch(url + relativePath, init);
     if (!response.ok) {
       throw new Error("Network response was not ok " + response.statusText);
     }
@@ -27,16 +28,18 @@ async function fetchData() {
   return result;
 }
 
-//use the fetched data by injecting it to the html template
-async function logFetchedData() {
-  let fetchedData = await fetchData();
-  console.log("Fetched Data:", fetchedData); // Now prints the data after fetch
+//fetch all category related data and inject them into handlebars templates
+async function fetchCategoryData() {
+  //run the fetching function for learning items
+  let fetchedLearningItems = await fetchData(
+    "/learning-items?category=" + catID
+  );
+  console.log("Fetched Learning Items: ", fetchedLearningItems);
 
   let books = [];
   let lectures = [];
 
-  //filter books and lectures into arrays
-  for (item of fetchedData) {
+  for (item of fetchedLearningItems) {
     if (item.type === "Book") {
       books.push(item);
     } else {
@@ -44,35 +47,47 @@ async function logFetchedData() {
     }
   }
 
-  // data to be used in html
+  //run the fetching function for subcategories of this category
+  let fetchedSubcategories = await fetchData(
+    "/categories/" + catID + "/subcategories"
+  );
+  console.log("Fetched Subcategories: ", fetchedSubcategories);
+
+  //run the fetching function for categories (to find current category title)
+  let fetchedCategories = await fetchData("/categories");
+  console.log("Fetched Categories: ", fetchedCategories);
+  let category = fetchedCategories.find((obj) => obj.id == catID);
+
+  //prepare data to be used in html
   const htmlData = {
-    title: "Course",
+    title: category.title,
     books: books,
     lectures: lectures,
+    subcourses: fetchedSubcategories,
   };
 
-  // get the template from the HTML
+  //get the template from the HTML
   const templateSource = document.getElementById("template").innerHTML;
 
-  // compile the template with Handlebars
+  //compile the template with Handlebars
   const template = Handlebars.compile(templateSource);
 
-  // generate the HTML by combining the template and the data
+  //generate the HTML by combining the template and the data
   const renderedHTML = template(htmlData);
 
-  // inject the rendered HTML into the DOM
+  //inject the rendered HTML into the DOM
   document.getElementById("loaded-template-container").innerHTML = renderedHTML;
 }
 
 //----------------------------------------------------------------- Start of Script ---------------------------------------------------------------------------- //
 
-// url to the remote server we use to fetch data for the site
+//url to the remote server we use to fetch data for the site
 const url = "https://learning-hub-1whk.onrender.com";
 
-// obtain the category id through url search parameters api and window's location property search segment
+//obtain the category id through url search parameters api and window's location property search segment
 const urlParams = new URLSearchParams(window.location.search);
 const catID = urlParams.get("id");
 console.log("Current Category ID: " + catID);
 
 //run the fetch and implement data into html templates
-logFetchedData();
+fetchCategoryData();

@@ -25,6 +25,15 @@
       <script id="template" type="text/x-handlebars-template">
         <h1>{{title}}</h1>
         <h2>Available subcourses:</h2>
+        <ol>
+          {{#each subcourses}}
+            <li>
+              <div class="subcourse-container">
+                <a href="subcategory.html?id={{this.id}}">{{this.title}}</a>
+              </div>
+            </li>
+          {{/each}}
+        </ol>
         <h2>Available learning content:</h2>
         <h3>Books:</h3>
         <ol>
@@ -72,7 +81,7 @@
                 {{this.title}}<br />
                 <strong>Cost:</strong>
                 ${{this.cost}}<br />
-                <div>
+                <div class="lecture-card-image-wrapper">
                   <img
                     src="https://learning-hub-1whk.onrender.com/{{this.image}}"
                   />
