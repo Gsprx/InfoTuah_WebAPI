@@ -20,7 +20,7 @@
         </div>
       </nav>
     </header>
-    <main>
+    <main id="home-main">
       <section class="hero-section">
         <div class="hero-section-description">
           <div class="hero-section-headers">
@@ -95,6 +95,54 @@
           <img src="public/Info_Tuah_Logo_Final.png" alt="InfoTuah Logo" />
         </div>
       </section>
+      <section class="home-courses-section">
+        <script id="template" type="text/x-handlebars-template">
+          <ul>
+            {{#each courses}}
+              <li>
+                <div class="course-container">
+                  <a
+                    class="course-title-link"
+                    href="category.html?id={{this.category.id}}"
+                  >
+                    <h3>{{this.category.title}}</h3>
+                  </a>
+                  <a
+                    class="course-image-link"
+                    href="category.html?id={{this.category.id}}"
+                  >
+                    <div class="course-image-wrapper">
+                      <img
+                        src="{{this.category.img_url}}"
+                        alt="{{this.category.img_url}}"
+                      />
+                    </div>
+                  </a>
+                  <div class="course-subcourses">
+                    <ul>
+                      {{#each this.subcategories}}
+                        <li>
+                          <a
+                            class="course-subcourse"
+                            href="subcategory.html?id={{this.id}}"
+                          >
+                            {{this.title}}
+                          </a>
+                        </li>
+                      {{/each}}
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            {{/each}}
+          </ul>
+        </script>
+
+        <!--Load handlebar-->
+        <div class="home-courses" id="home-courses-load"></div>
+      </section>
     </main>
+
+    <script src="homePageCoursesLoad.js"></script>
   </body>
 </html>
