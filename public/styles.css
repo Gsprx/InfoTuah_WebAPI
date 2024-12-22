@@ -85,7 +85,15 @@ main {
   display: flex;
   justify-content: center;
 }
+.add-to-cart-wrapper {
+  width: 32px;
+  height: 32px;
+  margin-left: 90%;
+}
 
+.add-to-cart-wrapper svg path {
+  fill: white;
+}
 .feature {
   font-style: italic;
 }
@@ -270,7 +278,7 @@ strong {
   padding-bottom: 2%;
   border-radius: 6px;
   background-color: #16191c;
-  width: 30vw;
+  width: 450px;
   display: flex;
   flex-direction: column;
 }
@@ -333,6 +341,7 @@ strong {
 
 .lecture-card {
   margin-top: 2%;
+  margin-bottom: 100px;
   border: 1px solid var(--dark-grey);
   box-shadow: 5px 3px rgba(18, 20, 23, 0.1);
   padding-left: 4%;
@@ -343,7 +352,7 @@ strong {
   background-color: #16191c;
   display: flex;
   flex-direction: column;
-  width: 30vw;
+  width: 450px;
 }
 
 .lecture-card-image-wrapper img {
