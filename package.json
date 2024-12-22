@@ -1,5 +1,5 @@
 {
-  "name": "InfoTuah",
+  "name": "infotuah",
   "version": "1.0.0",
   "description": "A simple web api server implementation",
   "main": "server.js",

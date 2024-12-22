@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+
+    <!--  Load handlebars library -->
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  </head>
+
+  <body>
+    <header>
+      <!-------- Navbar  --------->
+      <nav class="navbar">
+        <div class="nav-image-wrapper">
+          <a href="index.html">
+            <img src="images/Info_Tuah_Logo_Final.png" alt="InfoTuahLogo" />
+          </a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <!-- Handlebars Template -->
+      <script id="template" type="text/x-handlebars-template">
+        <h1>{{title}}</h1>
+        <h2>Available learning content:</h2>
+        <h3>Books:</h3>
+        <!-- At least one book in books array -->
+        {{#if hasBooks}}
+          <ol>
+            {{#each books}}
+              <li>
+                <div class="book-card">
+                  <span>
+                    <strong>Title:</strong>
+                    {{this.title}}
+                  </span>
+                  <span>
+                    <strong>Author:</strong>
+                    {{this.author}}
+                  </span>
+                  <span>
+                    <strong>Publication Date:</strong>
+                    {{this.publicationDate}}
+                  </span>
+                  <span>
+                    <strong>Publisher:</strong>
+                    {{this.publisher}}
+                  </span>
+                  <span>
+                    <strong>Cost:</strong>
+                    {{this.cost}}€
+                  </span>
+                  <div class="book-card-image-wrapper">
+                    <a href="{{this.link}}"><img
+                        src="https://learning-hub-1whk.onrender.com/{{this.image}}"
+                      />
+                    </a>
+                  </div>
+                  <span>
+                    <ul>
+                      <strong>Features:</strong>
+                      {{#each this.featuresArray}}
+                        <li>
+                          <div class="feature">
+                            {{this}}
+                          </div>
+                        </li>
+                      {{/each}}
+                    </ul>
+                  </span>
+                  <span><strong>Description:</strong>
+                    {{this.description}}
+                  </span>
+                </div>
+              </li>
+            {{/each}}
+          </ol>
+        {{/if}}
+        <!-- No books available -->
+        {{#unless hasBooks}}
+          <div class="empty">
+            <p>None available...</p>
+          </div>
+        {{/unless}}
+        <!-- At least one lecture in lectures array -->
+        <h3>Lectures:</h3>
+        {{#if hasLectures}}
+          <ol>
+            {{#each lectures}}
+              <li>
+                <div class="lecture-card">
+                  <span>
+                    <strong>Title:</strong>
+                    {{this.title}}
+                  </span>
+                  <span>
+                    <strong>Cost:</strong>
+                    {{this.cost}}€
+                  </span>
+                  <div class="lecture-card-image-wrapper">
+                    <a href="{{this.link}}"><img
+                        src="https://learning-hub-1whk.onrender.com/{{this.image}}"
+                      /></a>
+                  </div>
+                  <span>
+                    <ul>
+                      <strong>Features:</strong>
+                      {{#each this.featuresArray}}
+                        <li>
+                          <div class="feature">
+                            {{this}}
+                          </div>
+                        </li>
+                      {{/each}}
+                    </ul>
+                  </span>
+                  <span>
+                    <strong>Description:</strong>
+                    {{this.description}}
+                  </span>
+                </div>
+              </li>
+            {{/each}}
+          </ol>
+        {{/if}}
+
+        <!-- No lectures available -->
+        {{#unless hasLectures}}
+          <div class="empty">
+            <p>None available...</p>
+          </div>
+        {{/unless}}
+      </script>
+
+      <!-- Div used as output channel to the template with the data -->
+      <div id="loaded-template-container"></div>
+    </main>
+    <script defer src="/scripts/subcategoryLoad.js"></script>
+  </body>
+</html>
