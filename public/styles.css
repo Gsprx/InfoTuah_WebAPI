@@ -124,7 +124,7 @@ strong {
   color: rgb(113, 128, 144);
 }
 
-button {
+.add-to-cart-btn {
   width: 90%;
   height: 90%;
   background-color: transparent;
@@ -132,7 +132,7 @@ button {
   transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth scaling effect */
 }
 
-button:hover {
+.add-to-cart-btn:hover {
   transform: scale(1.2); /* Enlarge to 120% */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for effect */
 }

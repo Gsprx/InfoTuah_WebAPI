@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
-
+    <title>InfoTuah</title>
     <!--  Load handlebars library -->
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
   </head>
@@ -37,7 +37,7 @@
                     {{this.title}}
                   </span>
                   <div class="add-to-cart-wrapper">
-                    <button>
+                    <button class="add-to-cart-btn" data-id="{{this.id}}">
                       <svg
                         version="1.1"
                         id="Capa_1"
@@ -124,7 +124,7 @@
                     {{this.title}}
                   </span>
                   <div class="add-to-cart-wrapper">
-                    <button>
+                    <button class="add-to-cart-btn" data-id="{{this.id}}">
                       <svg
                         version="1.1"
                         id="Capa_1"
@@ -193,5 +193,6 @@
       <div id="loaded-template-container"></div>
     </main>
     <script defer src="/scripts/subcategoryLoad.js"></script>
+    <script defer src="/scripts/addToCart.js"></script>
   </body>
 </html>
