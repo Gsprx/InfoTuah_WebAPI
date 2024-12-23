@@ -86,9 +86,9 @@ main {
   justify-content: center;
 }
 .add-to-cart-wrapper {
-  width: 32px;
-  height: 32px;
-  margin-left: 90%;
+  width: 48px;
+  height: 48px;
+  margin-left: 85%;
 }
 
 .add-to-cart-wrapper svg path {
@@ -124,6 +124,18 @@ strong {
   color: rgb(113, 128, 144);
 }
 
+button {
+  width: 90%;
+  height: 90%;
+  background-color: transparent;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth scaling effect */
+}
+
+button:hover {
+  transform: scale(1.2); /* Enlarge to 120% */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for effect */
+}
 /* Stars (Rating) */
 .fa-star {
   color: #555;
@@ -135,11 +147,6 @@ strong {
 
 .stars {
   width: fit-content;
-}
-
-/* Buttons */
-.button {
-  padding: 12px 32px;
 }
 
 .button-primary {
