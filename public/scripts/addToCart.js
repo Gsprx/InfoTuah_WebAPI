@@ -10,12 +10,11 @@ const observer = new MutationObserver(() => {
   //clears any pending or previous timeout to avoid redundant executions
   clearTimeout(debounceTimeout);
 
-  // set a debounce timeout to trigger after a delay
   debounceTimeout = setTimeout(() => {
-    // final mutation (no mutation after 100ms) is when this code will be executed
     const buttons = document.querySelectorAll(".add-to-cart-btn");
     buttons.forEach((btn) => {
       btn.addEventListener("click", () => {
+        //send http request to server for adding item to cart
         const itemId = btn.getAttribute("data-id");
         console.log(`Item with id: ${itemId} added to the cart.`);
       });
