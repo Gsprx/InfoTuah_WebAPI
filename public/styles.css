@@ -81,7 +81,6 @@ main {
   padding-bottom: 32px;
   margin-top: 70px;
   z-index: 1;
-  margin-right: 10%;
   display: flex;
   justify-content: center;
 }
@@ -1022,21 +1021,23 @@ input[type="checkbox"]:checked::after {
 
 .error-container {
   display: none;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   background-color: #874e53;
   color: #721c24;
   border: 1px solid #f5c6cb;
   border-radius: 5px;
   margin: 20px 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: relative;
-  grid-column: 1/-1;
-  grid-row: 2/3;
+  z-index: 2;
   min-width: min-content;
   max-width: 60%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 30%;
   justify-self: center;
 }
 .error-container .close-error-button {
