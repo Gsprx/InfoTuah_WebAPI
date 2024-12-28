@@ -14,9 +14,9 @@ const observer = new MutationObserver(() => {
     const buttons = document.querySelectorAll(".add-to-cart-btn");
     buttons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        //check if user is logged in
-        if (true || !userLoggedIn()) {
-          //show error message when trying to add cart without log in
+        if (!userLoggedIn()) {
+          //user not logged in
+          //show error message
           const closeError = document.querySelector(".close-error-button");
           closeError.addEventListener("click", () => {
             hideError();
@@ -24,6 +24,8 @@ const observer = new MutationObserver(() => {
           showError("User must be logged in to add items to cart.");
           return;
         }
+        //user logged in
+        //add item to cart
 
         const itemId = btn.getAttribute("data-id");
         //send http request to server for adding item to cart
@@ -45,6 +47,10 @@ function showError(errorText) {
 function hideError() {
   const errorBox = document.querySelector(".error-container");
   errorBox.style.display = "none";
+}
+
+function userLoggedIn() {
+  return true;
 }
 
 // observe changes to the document body
