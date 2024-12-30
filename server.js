@@ -1,16 +1,19 @@
 // Node.js Server script
 const uuid = require("uuid");
-const path = require('path');
+const path = require("path");
 const express = require("express");
+
+// include DAO file
+const UserDAO = require("./public/scripts/DAO.js");
 
 const app = express();
 
 // Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Serve index.html for the root route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 const PORT = 8080;
