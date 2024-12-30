@@ -50,7 +50,7 @@ function hideError() {
 }
 
 function userLoggedIn() {
-  return true;
+  return false;
 }
 
 // observe changes to the document body
