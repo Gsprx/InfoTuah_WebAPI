@@ -522,20 +522,12 @@ header {
   justify-content: space-between;
 }
 
-.navbar ul {
-  height: inherit;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 2px;
-}
-
-.navbar-link {
+.nav-login {
   margin: 0 2px;
   height: 100%;
 }
 
-.navbar-link a {
+.nav-login a {
   display: flex;
   align-items: center;
   gap: 1px;
@@ -545,11 +537,11 @@ header {
 }
 
 /* Change color and background color on link hover*/
-.navbar-link a:hover {
+.nav-login a:hover {
   color: var(--very-dark-blue);
   background-color: white;
 }
-.navbar-link a:hover svg {
+.nav-login a:hover svg {
   fill: var(--very-dark-blue);
 }
 
