@@ -4,15 +4,19 @@ class UserDAO {
   }
 
   // return user if found, else return null
-  async findUserByUsername(username) {
+  findUserByUsername(username) {
+    let userFound = null;
     this.users.forEach((user) => {
-      if (user.username == username) return user;
+      if (user.username === username) {
+        userFound = user;
+        return;
+      }
     });
-    return null;
+    return userFound;
   }
 
   // validate user
-  async validateUser(username, password) {
+  validateUser(username, password) {
     const user = this.findUserByUsername(username);
     // if user doesn't exist return
     if (user == null) return false;
@@ -23,7 +27,7 @@ class UserDAO {
   }
 
   // add user, return true if user was added succesfully, return false if user already exists
-  async addUser(user) {
+  addUser(user) {
     // check that the user doesn't already exist
     if (!this.findUserByUsername(user.username)) {
       this.users.push(user);
