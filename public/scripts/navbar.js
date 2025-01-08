@@ -36,7 +36,9 @@ const logout = async (userData) => {
 
     if (data.success) {
       // remove from session storage
-      sessionStorage.removeItem("user");
+      if (sessionStorage.getItem("user")) {
+        sessionStorage.removeItem("user");
+      }
     } else {
       console.error("Something went wrong:", data.message);
     }

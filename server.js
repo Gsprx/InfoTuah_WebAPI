@@ -44,7 +44,7 @@ app.post("/login", (req, res) => {
   const userAuth = userDAO.validateUser(data.username, data.password);
 
   // if user authorized and not already logged in create a uuid
-  if (userAuth && !onlineUsersMap[data.username]) {
+  if (userAuth) {
     var sessionId = uuidv4();
     onlineUsersMap[data.username] = sessionId;
     console.log(onlineUsersMap);
@@ -52,12 +52,6 @@ app.post("/login", (req, res) => {
       success: true,
       message: "Login successful",
       sessionId: sessionId,
-    });
-  } else if (userAuth && onlineUsersMap[data.username]) {
-    // if user is already logged in
-    return res.status(401).json({
-      success: false,
-      message: "Already Logged In",
     });
   } else {
     return res.status(401).json({
@@ -73,21 +67,19 @@ app.post("/logout", (req, res) => {
   const data = req.body;
 
   // if this is an online user
-  if (onlineUsersMap[data.username]) {
+  if (
+    onlineUsersMap[data.username] &&
+    onlineUsersMap[data.username] == data.sessionId
+  ) {
     delete onlineUsersMap[data.username]; // remove him from the online users map
     console.log(onlineUsersMap);
-
-    // return response
-    return res.status(200).json({
-      success: true,
-      message: "Logout Successful",
-    });
-  } else {
-    return res.status(401).json({
-      success: false,
-      message: "Already logged out",
-    });
   }
+
+  // return response
+  return res.status(200).json({
+    success: true,
+    message: "Logout Successful",
+  });
 });
 
 // server
