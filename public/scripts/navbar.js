@@ -13,6 +13,34 @@ if (user) {
 
   // logout
   loginLink.addEventListener("click", () => {
-    sessionStorage.removeItem("user");
+    var data = { username: user.username, sessionId: user.sessionId };
+    logout(data);
   });
 }
+
+const logout = async (userData) => {
+  try {
+    const response = await fetch("http://localhost:8080/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+
+    if (!response.ok && response.status != 401) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.success) {
+      // remove from session storage
+      sessionStorage.removeItem("user");
+    } else {
+      console.error("Something went wrong:", data.message);
+    }
+  } catch (error) {
+    console.error("An error occurred:", error.message);
+  }
+};

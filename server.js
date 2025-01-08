@@ -33,6 +33,8 @@ usersList.forEach((user) => {
   userDAO.addUser(user);
 });
 
+let onlineUsersMap = {};
+
 // login endpoint
 app.post("/login", (req, res) => {
   // get the data
@@ -41,17 +43,49 @@ app.post("/login", (req, res) => {
   // try to authorize user
   const userAuth = userDAO.validateUser(data.username, data.password);
 
-  // if user authorized create a uuid
-  if (userAuth) {
+  // if user authorized and not already logged in create a uuid
+  if (userAuth && !onlineUsersMap[data.username]) {
+    var sessionId = uuidv4();
+    onlineUsersMap[data.username] = sessionId;
+    console.log(onlineUsersMap);
     return res.status(200).json({
       success: true,
       message: "Login successful",
-      sessionId: uuidv4(),
+      sessionId: sessionId,
+    });
+  } else if (userAuth && onlineUsersMap[data.username]) {
+    // if user is already logged in
+    return res.status(401).json({
+      success: false,
+      message: "Already Logged In",
     });
   } else {
     return res.status(401).json({
       success: false,
       message: "Invalid username or password",
+    });
+  }
+});
+
+// logout endpoint
+app.post("/logout", (req, res) => {
+  // get the data
+  const data = req.body;
+
+  // if this is an online user
+  if (onlineUsersMap[data.username]) {
+    delete onlineUsersMap[data.username]; // remove him from the online users map
+    console.log(onlineUsersMap);
+
+    // return response
+    return res.status(200).json({
+      success: true,
+      message: "Logout Successful",
+    });
+  } else {
+    return res.status(401).json({
+      success: false,
+      message: "Already logged out",
     });
   }
 });
