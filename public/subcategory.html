@@ -53,7 +53,16 @@
                     {{this.title}}
                   </span>
                   <div class="add-to-cart-wrapper">
-                    <button class="add-to-cart-btn" data-id="{{this.id}}">
+                    <button
+                      class="add-to-cart-btn"
+                      data-id="{{this.id}}"
+                      ,
+                      data-title="{{this.title}}"
+                      ,
+                      data-cost="{{this.cost}}"
+                      ,
+                      data-type="book"
+                    >
                       <svg
                         version="1.1"
                         id="Capa_1"
@@ -140,7 +149,16 @@
                     {{this.title}}
                   </span>
                   <div class="add-to-cart-wrapper">
-                    <button class="add-to-cart-btn" data-id="{{this.id}}">
+                    <button
+                      class="add-to-cart-btn"
+                      data-id="{{this.id}}"
+                      ,
+                      data-title="{{this.title}}"
+                      ,
+                      data-cost="{{this.cost}}"
+                      ,
+                      data-type="lecture"
+                    >
                       <svg
                         version="1.1"
                         id="Capa_1"
@@ -212,6 +230,11 @@
       <div class="error-container">
         <button type="button" class="close-error-button">✖</button>
         <p class="error-message"></p>
+      </div>
+      <!-- Cart Notification Box -->
+      <div class="cart-notification">
+        <button type="button" class="close-cart-notification">✖</button>
+        <p class="cart-notification-message"></p>
       </div>
     </main>
 

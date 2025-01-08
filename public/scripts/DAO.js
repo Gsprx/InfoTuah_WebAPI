@@ -1,6 +1,7 @@
 class UserDAO {
   constructor() {
     this.users = [];
+    this.cartMap = {};
   }
 
   // return user if found, else return null
@@ -31,10 +32,20 @@ class UserDAO {
     // check that the user doesn't already exist
     if (!this.findUserByUsername(user.username)) {
       this.users.push(user);
+      this.cartMap[user.username] = [];
       return true;
     }
 
     return false;
+  }
+
+  addCartItem(username, item) {
+    if (this.cartMap[username].includes(item)) {
+      return false;
+    } else {
+      this.cartMap[username].push(item);
+      return true;
+    }
   }
 }
 

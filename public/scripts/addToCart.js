@@ -13,27 +13,94 @@ const observer = new MutationObserver(() => {
   debounceTimeout = setTimeout(() => {
     const buttons = document.querySelectorAll(".add-to-cart-btn");
     buttons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        if (!userLoggedIn()) {
-          //user not logged in
-          //show error message
-          const closeError = document.querySelector(".close-error-button");
-          closeError.addEventListener("click", () => {
-            hideError();
-          });
-          showError("User must be logged in to add items to cart.");
-          return;
-        }
-        //user logged in
-        //add item to cart
+      //ensure no duplicate listeners are added to buttons
+      if (!btn.classList.contains("listener-attached")) {
+        btn.addEventListener("click", async () => {
+          if (!userLoggedIn()) {
+            //user not logged in
+            //show error message
+            const closeError = document.querySelector(".close-error-button");
+            closeError.addEventListener("click", () => {
+              hideError();
+            });
+            showError("User must be logged in to add items to cart.");
+            return;
+          }
+          //user logged in
 
-        const itemId = btn.getAttribute("data-id");
-        //send http request to server for adding item to cart
-        console.log(`Item with id: ${itemId} added to the cart.`);
-      });
+          const user = JSON.parse(sessionStorage.getItem("user"));
+          const cartData = {
+            username: user.username,
+            itemId: btn.getAttribute("data-id"),
+            sessionId: user.sessionId,
+            itemType: btn.getAttribute("data-type"),
+            itemCost: btn.getAttribute("data-cost"),
+            itemTitle: btn.getAttribute("data-title"),
+          };
+          console.log("Cart Details: ", cartData);
+
+          const reply = await addToCart(cartData);
+          //check if item was already in the cart
+          if (reply.success == true) {
+            //show notification
+            const closeNotif = document.querySelector(
+              ".close-cart-notification"
+            );
+            closeNotif.addEventListener("click", () => {
+              hideNotification();
+            });
+            showCartNotification(reply.message);
+          } else {
+            //show error
+            const closeError = document.querySelector(".close-error-button");
+            closeError.addEventListener("click", () => {
+              hideError();
+            });
+            showError(reply.message);
+          }
+        });
+        btn.classList.add("listener-attached");
+      }
     });
   }, 100); // 100ms delay
 });
+
+// send request to add item to user's cart
+async function addToCart(cartData_) {
+  try {
+    //send http request to server for adding item to cart
+    const response = await fetch("http://localhost:8080/addToCart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cartData_),
+    });
+    if (!response.ok && response.status != 403 && response.status != 409) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("An error occurred:", error.message);
+    return { success: false, message: "A network error occurred." };
+  }
+}
+
+// show notification box after adding an item to cart
+function showCartNotification(message) {
+  const notifBox = document.querySelector(".cart-notification");
+  const notifMessage = document.querySelector(".cart-notification-message");
+  notifMessage.textContent = message;
+  notifBox.style.display = "block";
+}
+
+//hide notification box
+function hideNotification() {
+  const notifBox = document.querySelector(".cart-notification");
+  notifBox.style.display = "none";
+}
 
 // show generic error box with given text as error message
 function showError(errorText) {
@@ -50,7 +117,7 @@ function hideError() {
 }
 
 function userLoggedIn() {
-  return false;
+  return sessionStorage.getItem("user") != null;
 }
 
 // observe changes to the document body

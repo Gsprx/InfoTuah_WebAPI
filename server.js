@@ -82,6 +82,33 @@ app.post("/logout", (req, res) => {
   });
 });
 
+// add to cart endpoint
+app.post("/addToCart", (req, res) => {
+  const data = req.body;
+
+  if (
+    onlineUsersMap[data.username] &&
+    onlineUsersMap[data.username] === data.sessionId
+  ) {
+    const reply = userDAO.addCartItem(data.username, data.itemId);
+    if (reply) {
+      return res.status(200).json({
+        success: true,
+        message: "Item successfully added to cart!",
+      });
+    } else {
+      return res.status(409).json({
+        success: false,
+        message: "Item is already in your cart!",
+      });
+    }
+  }
+  return res.status(403).json({
+    success: false,
+    message: "Invalid session token.",
+  });
+});
+
 // server
 const PORT = 8080;
 let server = app.listen(PORT, () => {
