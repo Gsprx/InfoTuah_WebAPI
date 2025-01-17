@@ -518,12 +518,42 @@ header {
   padding-right: 16px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+.nav-cart {
+  margin: 0 2px;
+  height: 100%;
+  align-self: end;
+  margin-left: 4vw;
+}
+
+.nav-cart a {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  height: 100%;
+  padding: 0 4px;
+  color: white;
+}
+
+.nav-cart svg {
+  fill: white;
+}
+
+.nav-cart a:hover {
+  color: var(--very-dark-blue);
+  background-color: white;
+}
+.nav-cart a:hover svg {
+  fill: var(--very-dark-blue);
 }
 
 .nav-login {
   margin: 0 2px;
   height: 100%;
+  justify-self: flex-end;
+  margin-left: 2vw;
 }
 
 .nav-login a {
@@ -553,6 +583,7 @@ header {
 .nav-image-wrapper {
   width: fit-content;
   height: fit-content;
+  margin-right: 75vw;
 }
 
 .nav-image-wrapper a {
