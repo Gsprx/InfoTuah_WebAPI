@@ -528,24 +528,27 @@ header {
   margin-left: 4vw;
 }
 
-.nav-cart a {
+.nav-cart button {
   display: flex;
   align-items: center;
   gap: 1px;
   height: 100%;
   padding: 0 4px;
   color: white;
+  background-color: var(--very-dark-blue);
+  border: none;
+  font-size: 1.1em;
 }
 
 .nav-cart svg {
   fill: white;
 }
 
-.nav-cart a:hover {
+.nav-cart button:hover {
   color: var(--very-dark-blue);
   background-color: white;
 }
-.nav-cart a:hover svg {
+.nav-cart button:hover svg {
   fill: var(--very-dark-blue);
 }
 
