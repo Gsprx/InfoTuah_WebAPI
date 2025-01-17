@@ -20,15 +20,18 @@ if (user) {
   //user is logged in, cart tab redirects to cart.html
   const cartLink = document.getElementById("cart-link");
   cartLink.addEventListener("click", () => {
-    window.location.href = `cart.html?username=${user.username}&sessionId=${user.sessionId}}`;
+    window.location.href = `cart.html?username=${user.username}&sessionId=${user.sessionId}`;
   });
 } else {
   //user not logged in, cart shows error message when trying to access
-  const closeError = document.querySelector(".close-error-button");
-  closeError.addEventListener("click", () => {
-    hideError();
+  const cartLink = document.getElementById("cart-link");
+  cartLink.addEventListener("click", () => {
+    const closeError = document.querySelector(".close-error-button");
+    closeError.addEventListener("click", () => {
+      hideError();
+    });
+    showError("User must be logged in to access Cart Service.");
   });
-  showError("User must be logged in to access Cart Service.");
 }
 
 // show generic error box with given text as error message
