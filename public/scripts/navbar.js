@@ -16,6 +16,33 @@ if (user) {
     var data = { username: user.username, sessionId: user.sessionId };
     logout(data);
   });
+
+  //user is logged in, cart tab redirects to cart.html
+  const cartLink = document.getElementById("cart-link");
+  cartLink.addEventListener("click", () => {
+    window.location.href = `cart.html?username=${user.username}&sessionId=${user.sessionId}}`;
+  });
+} else {
+  //user not logged in, cart shows error message when trying to access
+  const closeError = document.querySelector(".close-error-button");
+  closeError.addEventListener("click", () => {
+    hideError();
+  });
+  showError("User must be logged in to access Cart Service.");
+}
+
+// show generic error box with given text as error message
+function showError(errorText) {
+  const errorBox = document.querySelector(".error-container");
+  const errorMessage = document.querySelector(".error-message");
+  errorMessage.textContent = errorText;
+  errorBox.style.display = "block";
+}
+
+//hide error box
+function hideError() {
+  const errorBox = document.querySelector(".error-container");
+  errorBox.style.display = "none";
 }
 
 const logout = async (userData) => {
