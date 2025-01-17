@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const express = require("express");
 
 // include DAO file
-const UserDAO = require("./public/scripts/DAO.js");
+const UserDAO = require("./DAO.js");
 
 const app = express();
 
@@ -86,6 +86,7 @@ app.post("/logout", (req, res) => {
 app.post("/addToCart", (req, res) => {
   const data = req.body;
 
+  //validate user session
   if (
     onlineUsersMap[data.username] &&
     onlineUsersMap[data.username] === data.sessionId
@@ -107,6 +108,39 @@ app.post("/addToCart", (req, res) => {
     success: false,
     message: "Invalid session token.",
   });
+});
+
+//get cart endpoint
+app.post("/getCart", (req, res) => {
+  const data = req.body;
+  //validate user session
+  if (
+    onlineUsersMap[data.username] &&
+    onlineUsersMap[data.username] === data.sessionId
+  ) {
+    const items = userDAO.getCart(data.username);
+    let cartItems_ = [];
+    let totalCost_ = 0;
+    for (item of items) {
+      cartItems_.push({
+        id: item.id,
+        type: item.type,
+        title: item.title,
+        cost: item.cost,
+      });
+      totalCost_ += item.cost;
+    }
+    return res.status(200).json({
+      success: true,
+      cartItems: cartItems_,
+      totalCost: totalCost_,
+    });
+  } else {
+    return res.status(403).json({
+      success: false,
+      message: "Invalid session token.",
+    });
+  }
 });
 
 // server
