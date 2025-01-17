@@ -4,9 +4,12 @@ const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const express = require("express");
+const react = require("react");
+const ReactDOM = require("react-dom");
 
 // include DAO file
 const UserDAO = require("./DAO.js");
+const { log } = require("console");
 
 const app = express();
 
@@ -47,7 +50,7 @@ app.post("/login", (req, res) => {
   if (userAuth) {
     var sessionId = uuidv4();
     onlineUsersMap[data.username] = sessionId;
-    console.log(onlineUsersMap);
+    console.log("Online user sessions:", onlineUsersMap);
     return res.status(200).json({
       success: true,
       message: "Login successful",
@@ -91,7 +94,12 @@ app.post("/addToCart", (req, res) => {
     onlineUsersMap[data.username] &&
     onlineUsersMap[data.username] === data.sessionId
   ) {
-    const reply = userDAO.addCartItem(data.username, data.itemId);
+    const reply = userDAO.addCartItem(data.username, {
+      itemId: data.itemId,
+      title: data.itemTitle,
+      type: data.itemType,
+      cost: data.itemCost,
+    });
     if (reply) {
       return res.status(200).json({
         success: true,
@@ -119,16 +127,17 @@ app.post("/getCart", (req, res) => {
     onlineUsersMap[data.username] === data.sessionId
   ) {
     const items = userDAO.getCart(data.username);
+
     let cartItems_ = [];
     let totalCost_ = 0;
     for (item of items) {
       cartItems_.push({
-        id: item.id,
+        id: item.itemId,
         type: item.type,
         title: item.title,
         cost: item.cost,
       });
-      totalCost_ += item.cost;
+      totalCost_ += +item.cost;
     }
     return res.status(200).json({
       success: true,
@@ -141,6 +150,41 @@ app.post("/getCart", (req, res) => {
       message: "Invalid session token.",
     });
   }
+});
+
+//remove item from cart endpoint
+app.post("/removeItem", (req, res) => {
+  const data = req.body;
+  const reply = userDAO.removeCartItem(data.username, {
+    itemId: data.itemId,
+    title: data.itemTitle,
+    type: data.itemType,
+    cost: data.itemCost,
+  });
+  if (!reply) {
+    return res.status(409).json({
+      success: false,
+      message: "Item to be removed does not exist in your cart.",
+    });
+  }
+  //resend the cart data to the client after removal
+  const items = userDAO.getCart(data.username);
+  let cartItems_ = [];
+  let totalCost_ = 0;
+  for (item of items) {
+    cartItems_.push({
+      id: item.itemId,
+      type: item.type,
+      title: item.title,
+      cost: item.cost,
+    });
+    totalCost_ += +item.cost;
+  }
+  return res.status(200).json({
+    success: true,
+    cartItems: cartItems_,
+    totalCost: totalCost_,
+  });
 });
 
 // server

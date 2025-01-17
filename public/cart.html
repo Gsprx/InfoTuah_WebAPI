@@ -4,13 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
-    <title>InfoTuah</title>
+    <title>InfoTuah Cart Service</title>
 
     <!--  Load handlebars library -->
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <!-- React and ReactDOM CDN -->
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
   </head>
   <body>
     <header>
@@ -62,8 +64,8 @@
         </div>
       </nav>
     </header>
-    <main id="root"></main>
+    <main id="cart-root"></main>
+    <script type="text/babel" src="scripts/cart-react.js"></script>
+    <script src="scripts/navbar.js"></script>
   </body>
-  <script></script>
-  <script src="scripts/cart-react.js" type="module"></script>
 </html>

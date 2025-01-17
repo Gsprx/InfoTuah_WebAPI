@@ -501,6 +501,23 @@ strong {
   padding-top: 2rem;
 }
 
+.cart-list {
+  width: max-content;
+  font-size: 1.7em;
+}
+
+.cart-list li {
+  margin-top: 15px;
+}
+
+.cart-list p {
+  margin-top: 10px;
+  font-size: 1.8em;
+}
+
+.cart-list button {
+  margin-left: 10px;
+}
 /*----------- HEADER / NAVBAR -----------*/
 header {
   position: fixed; /*Fixed header position*/

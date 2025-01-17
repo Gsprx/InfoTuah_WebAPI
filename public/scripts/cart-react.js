@@ -1,63 +1,93 @@
-import React from "react";
-import ReactDOM from "react-dom";
+const { useState, useEffect } = React; // Use React's hooks directly
+const ReactDOM = window.ReactDOM; // Access ReactDOM via the window object
 
-// React component for the Cart Service
-const Cart = async () => {
-  //function to remove items from cart
-  const removeItem = async (itemId) => {
-    //send http request to server
-    const reply = await fetch("http://localhost:8080/getCart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: userSession.username,
-        itemId: itemId,
-      }),
-    });
-  };
-  //check if user session exists
+const Cart = () => {
+  const [cartItems, setCartItems] = useState([]); // Stores cart items
+  const [totalCost, setTotalCost] = useState(0); // Stores total cost
+  const [error, setError] = useState(null); // Tracks error messages
+
   const userSession = JSON.parse(sessionStorage.getItem("user"));
-  if (userSession == null) {
+  if (!userSession) {
+    setError("Invalid session");
+    return;
+  }
+
+  // Function to remove an item from the cart
+  const removeItem = async (itemId) => {
+    try {
+      const response = await fetch("http://localhost:8080/removeItem", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: userSession.username,
+          itemId: itemId,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        // Update the States data
+        setCartItems(result.cartItems);
+        setTotalCost(result.totalCost);
+      } else {
+        setError(result.message);
+      }
+    } catch (err) {
+      setError("An error occurred while removing the item.");
+    }
+  };
+
+  // Fetch cart data when the component mounts
+  useEffect(() => {
+    async function fetchCart() {
+      try {
+        const response = await fetch("http://localhost:8080/getCart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: userSession.username,
+            sessionId: userSession.sessionId,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          setCartItems(result.cartItems);
+          setTotalCost(result.totalCost);
+        } else {
+          setError(result.message);
+        }
+      } catch (err) {
+        setError("An error occurred while fetching the cart data.");
+      }
+    }
+
+    fetchCart();
+  }, []); // Empty dependency array ensures this runs only once on mount
+
+  // Render the component
+  if (error) {
     return (
-      <div class="invalid-session">
-        <h1>Error: Invalid Session</h1>
+      <div className="error">
+        <h1>Error: {error}</h1>
       </div>
     );
   }
 
-  //send http request to server
-  const reply = await fetch("http://localhost:8080/getCart", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      username: userSession.username,
-      sessionId: userSession.sessionId,
-    }),
-  });
-
-  // verify user session from server
-  if (!reply.success) {
-    return (
-      <div class="invalid-session">
-        <h1>Error: {reply.message}</h1>
-      </div>
-    );
-  }
-  const cartItems = reply.cartItems;
-  // check if cart is empty
-  if (cartItems.length == 0) {
+  if (cartItems.length === 0) {
     return <h1>Your cart is empty...</h1>;
   }
-  const totalCost = reply.totalCost;
+
   return (
-    <div>
+    <div className="cart-list">
       <h1>Items in your cart:</h1>
-      <ul className="cart-list">
-        {items.map((item) => (
+      <ul>
+        {cartItems.map((item) => (
           <li key={item.id}>
             <section>
               {item.type} | {item.title} | {item.cost}€
@@ -68,8 +98,8 @@ const Cart = async () => {
                   id="Capa_1"
                   xmlns="http://www.w3.org/2000/svg"
                   xmlnsXlink="http://www.w3.org/1999/xlink"
-                  width="12px"
-                  height="12px"
+                  width="24px"
+                  height="24px"
                   viewBox="0 0 468.36 468.36"
                   xmlSpace="preserve"
                 >
@@ -81,7 +111,7 @@ const Cart = async () => {
                       />
                       <path
                         d="M87.312,468.36h293.76V139.71H87.312V468.36z M303.042,184.588h15.301v238.891h-15.301V184.588z M226.542,184.588h15.3
-              v238.891h-15.3V184.588z M150.042,184.588h15.3v238.891h-15.3V184.588z"
+               v238.891h-15.3V184.588z M150.042,184.588h15.3v238.891h-15.3V184.588z"
                       />
                     </g>
                   </g>
@@ -91,9 +121,12 @@ const Cart = async () => {
           </li>
         ))}
       </ul>
-      <p> Total cost: {totalCost}€</p>
+      <p>Total cost: {totalCost}€</p>
     </div>
   );
 };
 
-ReactDOM.render(<Cart />, document.getElementById("cart-root"));
+// Render the Cart component
+const container = document.getElementById("cart-root");
+const root = ReactDOM.createRoot(container);
+root.render(<Cart />);

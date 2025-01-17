@@ -42,12 +42,24 @@ class UserDAO {
   //add cart item to user's cart
   addCartItem(username, item) {
     //check if item to be added already exists in the user's cart
-    if (this.cartMap[username].includes(item)) {
+    if (this.cartMap[username].some((itm) => itm.itemId === item.itemId)) {
       return false;
     } else {
       this.cartMap[username].push(item);
       return true;
     }
+  }
+
+  //remove cart item from user's cart
+  removeCartItem(username, item) {
+    if (this.cartMap[username].some((itm) => itm.itemId === item.itemId)) {
+      let indexToRemove = this.cartMap[username].findIndex(
+        (itm) => itm.itemId === item.itemId
+      );
+      this.cartMap[username].splice(indexToRemove, 1);
+      return true;
+    }
+    return false;
   }
 
   getCart(username) {
